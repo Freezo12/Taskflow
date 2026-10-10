@@ -1,13 +1,18 @@
 import { CalendarDays, CircleCheckBig, Inbox, Plus, Sun } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
+
+type SidebarProps = {
+aoNovaTarefa: () => void;
+};
+
 const itensMenu = [
   { titulo: "Hoje", caminho: "/", icone: Sun },
   { titulo: "Próximas", caminho: "/proximas", icone: CalendarDays },
   { titulo: "Todas as tarefas", caminho: "/tarefas", icone: Inbox },
   { titulo: "Concluídas", caminho: "/concluidas", icone: CircleCheckBig },
 ];
-export function Sidebar() {
+export function Sidebar({aoNovaTarefa,}: Readonly<SidebarProps>) {
   return (
     <aside className="sidebar">
       <div className="sidebar__brand">
@@ -21,10 +26,14 @@ export function Sidebar() {
           <span>Gerenciador de tarefas</span>
         </div>
       </div>
-      <button className="sidebar__new-task" type="button">
-        <Plus size={18} />
-        Nova tarefa
-      </button>
+        <button
+            className="sidebar__new‐task"
+            type="button"
+            onClick={aoNovaTarefa}
+        >
+            <Plus size={18}/>
+            Nova tarefa
+        </button>
       <nav className="sidebar__nav">
         {itensMenu.map((item) => {
           const Icone = item.icone;
