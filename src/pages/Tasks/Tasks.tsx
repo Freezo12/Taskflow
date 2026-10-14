@@ -29,7 +29,7 @@ export function Tasks() {
                 </div>
                 <button
                     type="button"
-                    onClick={abrirTaskModal}
+                    onClick={() => abrirTaskModal()}
                 >
                     Nova tarefa
                 </button>
@@ -45,6 +45,7 @@ export function Tasks() {
                 <TaskList
                     tarefas={tarefas}
                     aoExcluir={removerTarefa}
+                    aoEditar={abrirTaskModal}
                 />
             )}
         </section>

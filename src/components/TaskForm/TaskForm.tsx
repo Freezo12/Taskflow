@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import type { Prioridade, Tarefa } from "../../types/Tarefa";
 import "./TaskForm.css";
 type NovaTarefa = Omit<Tarefa, "_id">;
-type TaskFormProps = { aoSalvar: (tarefa: NovaTarefa) => Promise<void>; aoCancelar: () => void };
+type TaskFormProps = { aoSalvar: (tarefa: NovaTarefa) => Promise<void>; aoCancelar: () => void; tarefaEmEdicao: Tarefa | null };
 const estadoInicial: NovaTarefa = {
   titulo: "",
   descricao: "",
@@ -11,9 +11,26 @@ const estadoInicial: NovaTarefa = {
   projeto: "",
   concluida: false,
 };
-export function TaskForm({ aoSalvar, aoCancelar }: Readonly<TaskFormProps>) {
+export function TaskForm({ aoSalvar, aoCancelar, tarefaEmEdicao }: Readonly<TaskFormProps>) {
   const [formulario, setFormulario] = useState<NovaTarefa>(estadoInicial);
-  const [salvando, setSalvando] = useState(false);
+  const [salvando, setSalvando] =
+      useState(false);
+
+  useEffect(() => {
+      if (tarefaEmEdicao) {
+          setFormulario({
+              titulo: tarefaEmEdicao.titulo,
+              descricao: tarefaEmEdicao.descricao,
+              data: tarefaEmEdicao.data,
+              prioridade: tarefaEmEdicao.prioridade,
+              projeto: tarefaEmEdicao.projeto,
+              concluida: tarefaEmEdicao.concluida,
+          });
+      } else {
+            setFormulario(estadoInicial);
+      }
+    }, [tarefaEmEdicao]);
+
   function alterarCampo(campo: keyof NovaTarefa, valor: string | boolean) {
     setFormulario((estadoAtual) => ({
       ...estadoAtual,
@@ -32,7 +49,10 @@ export function TaskForm({ aoSalvar, aoCancelar }: Readonly<TaskFormProps>) {
   }
   return (
     <form className="task-form" onSubmit={enviarFormulario}>
-      <h2>Nova tarefa</h2>
+      <h2>{tarefaEmEdicao
+        ? "Editar tarefa"
+        : "Nova tarefa"}
+      </h2>
       <label>
         <span>Título</span>
         <input
@@ -80,9 +100,13 @@ export function TaskForm({ aoSalvar, aoCancelar }: Readonly<TaskFormProps>) {
         <button type="button" onClick={aoCancelar}>
           Cancelar
         </button>
-        <button type="submit" disabled={salvando}>
-          {salvando ? "Salvando..." : "Criar tarefa"}
-        </button>
+          <button type="submit" disabled={salvando}>
+              {salvando
+                  ? "Salvando..."
+                  : tarefaEmEdicao
+                      ? "Salvar alterações"
+                      : "Criar tarefa"}
+          </button>
       </div>
     </form>
   );
