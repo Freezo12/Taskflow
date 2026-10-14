@@ -27,7 +27,7 @@ export function Sidebar({aoNovaTarefa,}: Readonly<SidebarProps>) {
         </div>
       </div>
         <button
-            className="sidebar__new‐task"
+            className="sidebar__new-task"
             type="button"
             onClick={aoNovaTarefa}
         >
