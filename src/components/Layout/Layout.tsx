@@ -3,22 +3,28 @@ import {Outlet} from "react-router-dom";
 import {Header} from "../Header/Header";
 import {Sidebar} from "../Sidebar/Sidebar";
 import {TaskModal} from "../TaskModal/TaskModal";
+import type { Tarefa } from "../../types/Tarefa";
 import "./Layout.css";
 
 export type LayoutContext = {
-    abrirTaskModal: () => void;
+    abrirTaskModal: (tarefa?: Tarefa) => void;
 };
 
 export function Layout() {
     const [taskModalAberto, setTaskModalAberto] =
         useState(false);
 
-    function abrirTaskModal() {
+    const [tarefaEmEdicao, setTarefaEmEdicao] =
+        useState<Tarefa | null>(null);
+
+    function abrirTaskModal(tarefa?: Tarefa) {
+        setTarefaEmEdicao(tarefa ?? null);
         setTaskModalAberto(true);
     }
 
     function fecharTaskModal() {
         setTaskModalAberto(false);
+        setTarefaEmEdicao(null);
     }
 
     return (
@@ -41,6 +47,7 @@ export function Layout() {
             <TaskModal
                 aberto={taskModalAberto}
                 aoFechar={fecharTaskModal}
+                tarefaEmEdicao={tarefaEmEdicao}
             />
         </div>
     );

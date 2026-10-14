@@ -2,9 +2,13 @@ import { CalendarDays, Circle, CircleCheckBig, Pencil, Trash2 } from "lucide-rea
 import type { Tarefa } from "../../types/Tarefa";
 import "./TaskCard.css";
 
-type TaskCardProps = { tarefa: Tarefa; aoExcluir: (id: string) => void };
+type TaskCardProps = {
+    tarefa: Tarefa;
+    aoExcluir: (id: string) => void;
+    aoEditar: (tarefa: Tarefa) => void;
+};
 
-export function TaskCard({ tarefa, aoExcluir }: Readonly<TaskCardProps>) {
+export function TaskCard({ tarefa, aoExcluir, aoEditar }: Readonly<TaskCardProps>) {
   return (
     <article className={tarefa.concluida ? "task-card task-card--completed" : "task-card"}>
       <button
@@ -18,7 +22,10 @@ export function TaskCard({ tarefa, aoExcluir }: Readonly<TaskCardProps>) {
         <div className="task-card__header">
           <h3>{tarefa.titulo}</h3>
           <div className="task-card__actions">
-            <button type="button" aria-label="Editar tarefa">
+            <button type="button"
+                    aria-label="Editar tarefa"
+                    onClick={() => aoEditar(tarefa)}
+            >
               <Pencil size={17} />
             </button>
             <button

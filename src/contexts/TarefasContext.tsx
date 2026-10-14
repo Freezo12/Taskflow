@@ -9,6 +9,7 @@ import {
     criarTarefa,
     excluirTarefa,
     listarTarefas,
+    alterarTarefa,
 } from "../services/tarefaService";
 import type {Tarefa} from "../types/Tarefa";
 
@@ -19,6 +20,10 @@ type TarefasContextType = {
     erro: string;
     adicionarTarefa: (
         novaTarefa: NovaTarefa,
+    ) => Promise<void>;
+    atualizarTarefa: (
+        id: string,
+        tarefa: Omit<Tarefa, "_id">
     ) => Promise<void>;
     removerTarefa: (
         id: string,
@@ -79,6 +84,21 @@ export function TarefasProvider({
         }
     }
 
+    async function atualizarTarefa(
+        id: string,
+        tarefa: Omit<Tarefa, "_id">
+    ) {
+        const tarefaAtualizada =
+            await alterarTarefa(id, tarefa);
+
+        setTarefas((tarefasAtuais) =>
+            tarefasAtuais.map((tarefaAtual) =>
+                tarefaAtual._id === tarefaAtualizada._id
+                    ? tarefaAtualizada
+                    : tarefaAtual
+            )
+        );
+    }
     async function removerTarefa(id: string) {
         try {
             setErro("");
@@ -103,6 +123,7 @@ export function TarefasProvider({
                 erro,
                 adicionarTarefa,
                 removerTarefa,
+                atualizarTarefa,
             }}
         >
             {children}

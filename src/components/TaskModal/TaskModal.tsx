@@ -8,13 +8,15 @@ type NovaTarefa = Omit<Tarefa, "_id">;
 type TaskModalProps = {
     aberto: boolean;
     aoFechar: () => void;
+    tarefaEmEdicao: Tarefa | null;
 };
 
 export function TaskModal({
                               aberto,
                               aoFechar,
+                              tarefaEmEdicao,
                           }: Readonly<TaskModalProps>) {
-    const {adicionarTarefa} =
+    const {adicionarTarefa, atualizarTarefa} =
         useTarefas();
     if (!aberto) {
         return null;
@@ -23,7 +25,15 @@ export function TaskModal({
     async function salvarTarefa(
         novaTarefa: NovaTarefa,
     ) {
-        await adicionarTarefa(novaTarefa);
+        if (tarefaEmEdicao?._id) {
+            await atualizarTarefa(
+                tarefaEmEdicao._id,
+                novaTarefa,
+            );
+        } else {
+            await adicionarTarefa(novaTarefa);
+        }
+
         aoFechar();
     }
 
@@ -33,7 +43,11 @@ export function TaskModal({
                 className="task-modal__content"
                 role="dialog"
                 aria-modal="true"
-            aria-label="Nova tarefa"
+            aria-label={
+                tarefaEmEdicao
+                    ? "Editar tarefa"
+                    : "Nova tarefa"
+            }
             >
             <button
                 className="task-modal__close"
@@ -46,6 +60,7 @@ export function TaskModal({
     <TaskForm
         aoSalvar={salvarTarefa}
         aoCancelar={aoFechar}
+        tarefaEmEdicao={tarefaEmEdicao}
     />
 </div>
 </div>
