@@ -19,7 +19,7 @@ export function Header({
                 />
             </div>
             <button
-                className="header__new‐task"
+                className="header__new-task"
                 type="button"
                 onClick={aoNovaTarefa}
             >

@@ -26,11 +26,11 @@ export function Layout() {
             <Sidebar
                 aoNovaTarefa={abrirTaskModal}
             />
-            <div className="app‐layout__content">
+            <div className="app-layout__content">
                 <Header
                     aoNovaTarefa={abrirTaskModal}
                 />
-                <main className="app‐layout__main">
+                <main className="app-layout__main">
                     <Outlet
                         context={{
                             abrirTaskModal,
