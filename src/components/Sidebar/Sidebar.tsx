@@ -29,7 +29,7 @@ export function Sidebar({aoNovaTarefa,}: Readonly<SidebarProps>) {
         <button
             className="sidebar__new-task"
             type="button"
-            onClick={aoNovaTarefa}
+            onClick={() => aoNovaTarefa()}
         >
             <Plus size={18}/>
             Nova tarefa
