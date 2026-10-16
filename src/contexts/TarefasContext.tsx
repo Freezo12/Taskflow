@@ -15,6 +15,7 @@ import type {Tarefa} from "../types/Tarefa";
 
 type NovaTarefa = Omit<Tarefa, "_id">;
 type TarefasContextType = {
+    alternarConclusao: (tarefa: Tarefa) => Promise<void>;
     tarefas: Tarefa[];
     carregando: boolean;
     erro: string;
@@ -99,6 +100,17 @@ export function TarefasProvider({
             )
         );
     }
+    async function alternarConclusao(tarefa: Tarefa) {
+        const {_id, ...dados} = tarefa;
+        if (!_id) return;
+        try {
+            setErro("");
+            await atualizarTarefa(_id, {...dados, concluida: !tarefa.concluida});
+        } catch {
+            setErro("N?o foi poss?vel alterar a conclus?o da tarefa.");
+        }
+    }
+
     async function removerTarefa(id: string) {
         try {
             setErro("");
@@ -124,6 +136,7 @@ export function TarefasProvider({
                 adicionarTarefa,
                 removerTarefa,
                 atualizarTarefa,
+                alternarConclusao,
             }}
         >
             {children}
