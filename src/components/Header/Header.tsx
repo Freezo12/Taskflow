@@ -21,7 +21,7 @@ export function Header({
             <button
                 className="header__new-task"
                 type="button"
-                onClick={aoNovaTarefa}
+                onClick={() => aoNovaTarefa()}
             >
                 <Plus size={18}/>
                 Nova tarefa
